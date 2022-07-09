@@ -110,7 +110,7 @@ public class UserService {
     @Transactional
     public Object update(User user, UserDto userDto) {
 
-        user.setPassword(userDto.getPassword());
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setUsername(userDto.getUsername());
         user.setBirthday(userDto.getBirthday());
         user.setProfileImage(userDto.getProfileImage());

@@ -37,5 +37,10 @@ public class Exhibition extends Timestamped {
     @Column(name = "exhibition_desc", nullable = false)
     private String exhibitionDesc;
 
+    @Column(name = "scrap_count")
+    private int scrapCount = 0;
+
+    @Column(name = "hits")
+    private int hits = 0;
 
 }

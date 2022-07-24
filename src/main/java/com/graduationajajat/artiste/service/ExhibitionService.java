@@ -1,5 +1,6 @@
 package com.graduationajajat.artiste.service;
 
+import com.graduationajajat.artiste.dto.ArtDto;
 import com.graduationajajat.artiste.dto.ExhibitionDetailResponseDto;
 import com.graduationajajat.artiste.dto.ExhibitionDto;
 import com.graduationajajat.artiste.dto.ExhibitionResponseDto;
@@ -51,7 +52,17 @@ public class ExhibitionService {
         }
 
         // 작품 등록
-        artRepository.saveAll(exhibitionDto.getArtList());
+        List<Art> artList = new ArrayList<>();
+        for(ArtDto artDto : exhibitionDto.getArtList()) {
+            Art art = Art.builder()
+                    .exhibition(exhibition)
+                    .artImage(artDto.getArtImage())
+                    .artName(artDto.getArtName())
+                    .artDesc(artDto.getArtDesc())
+                    .build();
+            artList.add(art);
+        }
+        artRepository.saveAll(artList);
 
         return exhibition;
     }

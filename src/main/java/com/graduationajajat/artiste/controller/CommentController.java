@@ -59,10 +59,10 @@ public class CommentController {
 
     // 사용자 댓글 삭제
     @ApiOperation(value = "사용자 댓글 삭제")
-    @DeleteMapping("/{exhibitionId}")
-    public ResponseEntity deleteComment(@PathVariable("exhibitionId") Long exhibitionId) {
+    @DeleteMapping("/{commentId}")
+    public ResponseEntity deleteComment(@PathVariable("commentId") Long commentId) {
         User user = userService.getMyInfo();
-        commentService.deleteComment(user, exhibitionId);
+        commentService.deleteComment(user, commentId);
 
         return new ResponseEntity(HttpStatus.OK);
     }

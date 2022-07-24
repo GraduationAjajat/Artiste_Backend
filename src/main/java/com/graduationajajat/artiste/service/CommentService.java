@@ -44,9 +44,9 @@ public class CommentService {
 
     // 사용자 댓글 삭제
     @Transactional
-    public void deleteComment(User user, Long exhibitionId) {
-        commentRepository.deleteByUserIdAndExhibitionId(user.getId(), exhibitionId);
-        Exhibition exhibition = exhibitionRepository.findById(exhibitionId).get();
+    public void deleteComment(User user, Long commentId) {
+        commentRepository.deleteByUserIdAndExhibitionId(user.getId(), commentId);
+        Exhibition exhibition = exhibitionRepository.findById(commentId).get();
         exhibition.setCommentCount(exhibition.getCommentCount() - 1); // 댓글 수 감소
 
     }

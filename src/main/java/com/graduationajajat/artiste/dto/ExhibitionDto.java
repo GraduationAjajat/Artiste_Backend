@@ -32,7 +32,7 @@ public class ExhibitionDto {
     private List<Tag> tagList;
 
     @NotNull
-    private List<Art> artList;
+    private List<ArtDto> artList;
 
 }
 

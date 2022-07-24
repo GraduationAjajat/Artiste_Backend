@@ -30,9 +30,9 @@ public class ScrapController {
     // 사용자 찜 목록 조회
     @ApiOperation(value = "사용자 찜 목록 조회")
     @GetMapping("")
-    public ResponseEntity<? extends ResponseDto> getScraps() {
+    public ResponseEntity<? extends ResponseDto> getScrapsByUserId() {
         User user = userService.getMyInfo();
-        List<Scrap> scrapList = scrapService.findScrapByUserId(user.getId());
+        List<Scrap> scrapList = scrapService.getScrapsByUserId(user.getId());
         List<Exhibition> exhibitionList = new ArrayList<>();
         for(Scrap scrap : scrapList)
             exhibitionList.add(scrap.getExhibition());
@@ -41,8 +41,8 @@ public class ScrapController {
 
     // 사용자 찜 추가
     @ApiOperation(value = "사용자 찜 추가")
-    @GetMapping("/scrap/{exhibitionId}")
-    public ResponseEntity createShopClip(@PathVariable("exhibitionId") Long exhibitionId) {
+    @PostMapping("/{exhibitionId}")
+    public ResponseEntity createScrap(@PathVariable("exhibitionId") Long exhibitionId) {
         User user = userService.getMyInfo();
         scrapService.createScrap(user, exhibitionId);
         return new ResponseEntity(HttpStatus.OK);
@@ -50,8 +50,8 @@ public class ScrapController {
 
     // 사용자 찜 삭제
     @ApiOperation(value = "사용자 찜 삭제")
-    @GetMapping("/unscrap/{exhibitionId}")
-    public ResponseEntity deleteShopClip(@PathVariable("exhibitionId") Long exhibitionId) {
+    @DeleteMapping("/unscrap/{exhibitionId}")
+    public ResponseEntity deleteScrap(@PathVariable("exhibitionId") Long exhibitionId) {
         User user = userService.getMyInfo();
         scrapService.deleteScrap(user, exhibitionId);
 
@@ -60,7 +60,7 @@ public class ScrapController {
 
     // 사용자 찜 여부 조회
     @ApiOperation(value = "사용자 찜 여부 조회")
-    @GetMapping("/shop/check/{exhibitionId}")
+    @GetMapping("/check/{exhibitionId}")
     public ResponseEntity<Boolean> checkUserScrap(@PathVariable Long exhibitionId) {
         User user = userService.getMyInfo();
         return ResponseEntity.ok(scrapService.checkUserScrap(user, exhibitionId));

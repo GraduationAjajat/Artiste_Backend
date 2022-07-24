@@ -19,7 +19,7 @@ public class ScrapService {
 
     // 사용자 찜 목록 조회
     @Transactional
-    public List<Scrap> findScrapByUserId(Long userId) {
+    public List<Scrap> getScrapsByUserId(Long userId) {
         return scrapRepository.findAllByUserId(userId);
     }
 

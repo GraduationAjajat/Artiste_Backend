@@ -13,6 +13,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+// 전시회 등록
 public class ExhibitionDto {
 
     @NotNull

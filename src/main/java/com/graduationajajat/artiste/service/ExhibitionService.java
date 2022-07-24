@@ -28,7 +28,7 @@ public class ExhibitionService {
 
     // 전시회 등록
     @Transactional
-    public Exhibition addExhibition(User user, ExhibitionDto exhibitionDto) {
+    public Exhibition createExhibition(User user, ExhibitionDto exhibitionDto) {
 
         // 전시회 등록
         Exhibition exhibition = Exhibition.builder()

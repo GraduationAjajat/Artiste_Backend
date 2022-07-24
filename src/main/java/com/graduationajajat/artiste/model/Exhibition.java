@@ -40,6 +40,10 @@ public class Exhibition extends Timestamped {
     @Column(name = "scrap_count")
     private int scrapCount = 0;
 
+    @Column(name = "comment_count")
+    private int commentCount = 0;
+
+
     @Column(name = "hits")
     private int hits = 0;
 

@@ -10,6 +10,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+// 전시회 상세 정보
 public class ExhibitionDetailResponseDto {
 
     private Long exhibitionId;

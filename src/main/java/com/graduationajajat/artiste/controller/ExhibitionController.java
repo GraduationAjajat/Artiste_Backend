@@ -26,10 +26,10 @@ public class ExhibitionController {
 
     // 전시회 등록 Controller
     @ApiOperation(value = "전시회 등록")
-    @PostMapping("/new")
-    public ResponseEntity<Object> addExhibition(@Valid @RequestBody ExhibitionDto exhibitionDto) {
+    @PostMapping("")
+    public ResponseEntity<Object> createExhibition(@Valid @RequestBody ExhibitionDto exhibitionDto) {
         User user = userService.getMyInfo();
-        return ResponseEntity.ok(exhibitionService.addExhibition(user, exhibitionDto));
+        return ResponseEntity.ok(exhibitionService.createExhibition(user, exhibitionDto));
     }
 
     // 마감 전 전시회 전체 조회
@@ -42,7 +42,7 @@ public class ExhibitionController {
     // 검색
     @ApiOperation(value = "전시회명 검색")
     @GetMapping("/search")
-    public ResponseEntity<List<ExhibitionResponseDto>> getExhibitions(@RequestParam(name = "search") String search, @RequestParam(name = "tags", required = false) List<Tag> tags, @RequestParam(name = "sortBy", required = false) String sortBy) {
+    public ResponseEntity<List<ExhibitionResponseDto>> getSearchExhibitions(@RequestParam(name = "search") String search, @RequestParam(name = "tags", required = false) List<Tag> tags, @RequestParam(name = "sortBy", required = false) String sortBy) {
         return ResponseEntity.ok(exhibitionService.getSearchExhibitions(search, tags, sortBy));
     }
 

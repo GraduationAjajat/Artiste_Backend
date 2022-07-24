@@ -49,21 +49,21 @@ public class UserController {
 
     // SpringContext 에서 유저 정보 조회
     @ApiOperation(value = "유저 정보 조회 - SpringContext 내")
-    @GetMapping("/myInfo")
+    @GetMapping("")
     public ResponseEntity<User> getMyUserInfo() {
         return ResponseEntity.ok(userService.getMyInfo());
     }
 
-    // 로그인 아이디로 유저 정보 조회
+    // 이메일로 유저 정보 조회
     @ApiOperation(value = "유저 정보 조회 - 이메일")
-    @GetMapping("/userInfo/{email}")
+    @GetMapping("/{email}")
     public ResponseEntity<User> getUserInfo(@PathVariable String email) {
         return ResponseEntity.ok(userService.getUserInfo(email));
     }
 
     // 회원 정보 수정
     @ApiOperation(value = "회원 정보 수정")
-    @PostMapping("/update")
+    @PutMapping("")
     public ResponseEntity<Object> update(@Valid @RequestBody UserDto userDto) {
         User user = userService.getMyInfo();
         return ResponseEntity.ok(userService.update(user, userDto));

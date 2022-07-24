@@ -50,7 +50,7 @@ public class CommentController {
 
     // 사용자 댓글 추가
     @ApiOperation(value = "사용자 댓글 추가")
-    @PostMapping("/{exhibitionId}")
+    @PostMapping("")
     public ResponseEntity createComment(@Valid @RequestBody CommentDto commentDto) {
         User user = userService.getMyInfo();
         commentService.createComment(user, commentDto.getExhibitionId(), commentDto.getContent());

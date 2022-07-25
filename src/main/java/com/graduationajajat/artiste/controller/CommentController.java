@@ -1,8 +1,9 @@
 package com.graduationajajat.artiste.controller;
 
-import com.graduationajajat.artiste.dto.CommentDto;
-import com.graduationajajat.artiste.dto.CommonResponseDto;
-import com.graduationajajat.artiste.dto.ResponseDto;
+import com.graduationajajat.artiste.dto.request.CommentDto;
+import com.graduationajajat.artiste.dto.response.CommentResponseDto;
+import com.graduationajajat.artiste.dto.response.CommonResponseDto;
+import com.graduationajajat.artiste.dto.response.ResponseDto;
 import com.graduationajajat.artiste.model.Comment;
 import com.graduationajajat.artiste.model.Exhibition;
 import com.graduationajajat.artiste.model.User;
@@ -34,17 +35,14 @@ public class CommentController {
     public ResponseEntity<? extends ResponseDto> getCommentsByUserId() {
         User user = userService.getMyInfo();
         List<Comment> commentList = commentService.getCommentsByUserId(user.getId());
-        List<Exhibition> exhibitionList = new ArrayList<>();
-        for (Comment comment : commentList)
-            exhibitionList.add(comment.getExhibition());
-        return ResponseEntity.ok().body(new CommonResponseDto<>(exhibitionList));
+        return ResponseEntity.ok().body(new CommonResponseDto<>(commentList));
     }
 
     // 전시회 댓글 목록 조회
     @ApiOperation(value = "전시회 댓글 목록 조회")
     @GetMapping("/{exhibitionId}")
     public ResponseEntity<? extends ResponseDto> getCommentsByExhibitoinId(@PathVariable("exhibitionId") Long exhibitionId) {
-        List<Comment> commentList = commentService.getCommentsByExhibitionId(exhibitionId);
+        List<CommentResponseDto> commentList = commentService.getCommentsByExhibitionId(exhibitionId);
         return ResponseEntity.ok().body(new CommonResponseDto<>(commentList));
     }
 

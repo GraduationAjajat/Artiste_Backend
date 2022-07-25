@@ -1,5 +1,6 @@
 package com.graduationajajat.artiste.service;
 
+import com.graduationajajat.artiste.dto.response.CountFollowResponseDto;
 import com.graduationajajat.artiste.model.Exhibition;
 import com.graduationajajat.artiste.model.Follow;
 import com.graduationajajat.artiste.model.User;
@@ -60,5 +61,13 @@ public class FollowService {
     @Transactional(readOnly = true)
     public boolean checkUserFollowing(Long userId, Long followingId) {
         return followRepository.existsByFollowingIdAndFollowerId(followingId, userId);
+    }
+
+    // 사용자 팔로잉 목록 조회
+    @Transactional
+    public CountFollowResponseDto countUserFollow(Long userId) {
+        int followerCount = followRepository.countFollwerByFollowingId(userId);
+        int followingCount = followRepository.countFollwingByFollowerId(userId);
+        return CountFollowResponseDto.builder().followerCount(followerCount).followingCount(followingCount).build();
     }
 }

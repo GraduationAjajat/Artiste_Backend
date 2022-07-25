@@ -1,9 +1,9 @@
 package com.graduationajajat.artiste.service;
 
-import com.graduationajajat.artiste.dto.LoginDto;
-import com.graduationajajat.artiste.dto.TokenDto;
-import com.graduationajajat.artiste.dto.TokenRequestDto;
-import com.graduationajajat.artiste.dto.UserDto;
+import com.graduationajajat.artiste.dto.request.LoginDto;
+import com.graduationajajat.artiste.dto.request.TokenDto;
+import com.graduationajajat.artiste.dto.request.TokenRequestDto;
+import com.graduationajajat.artiste.dto.request.UserDto;
 import com.graduationajajat.artiste.jwt.TokenProvider;
 import com.graduationajajat.artiste.model.RefreshToken;
 import com.graduationajajat.artiste.model.User;
@@ -99,6 +99,12 @@ public class UserService {
         return userRepository.existsByEmail(email);
     }
 
+    // 유저 닉네임 중복 체크
+    @Transactional(readOnly = true)
+    public boolean checkNicknameDuplication(String nickname) {
+        return userRepository.existsByNickname(nickname);
+    }
+
     // 현재 SecurityContext 에 있는 유저 정보 조회
     @Transactional(readOnly = true)
     public User getMyInfo() {
@@ -112,7 +118,9 @@ public class UserService {
 
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setUsername(userDto.getUsername());
+        user.setNickname(userDto.getNickname());
         user.setBirthday(userDto.getBirthday());
+        user.setGender(userDto.getGender());
         user.setProfileImage(userDto.getProfileImage());
 
         return userRepository.save(user);

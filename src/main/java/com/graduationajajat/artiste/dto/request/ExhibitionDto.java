@@ -1,5 +1,6 @@
-package com.graduationajajat.artiste.dto;
+package com.graduationajajat.artiste.dto.request;
 
+import com.graduationajajat.artiste.dto.request.ArtDto;
 import com.graduationajajat.artiste.model.Tag;
 import lombok.*;
 
@@ -12,23 +13,26 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-// 전시회 목록
-public class ExhibitionResponseDto {
+// 전시회 등록
+public class ExhibitionDto {
 
-    private Long exhibitionId;
-
+    @NotNull
     private String exhibitionName;
 
-    private String thumbnail;
-
-    private String username;
-
+    @NotNull
     private LocalDateTime startDate;
 
+    @NotNull
     private LocalDateTime endDate;
 
+    @NotNull
+    private String exhibitionDesc;
+
+    @NotNull
     private List<Tag> tagList;
 
-    private int scrapCount;
+    @NotNull
+    private List<ArtDto> artList;
 
 }
+

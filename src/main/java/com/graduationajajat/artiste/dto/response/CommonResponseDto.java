@@ -1,4 +1,4 @@
-package com.graduationajajat.artiste.dto;
+package com.graduationajajat.artiste.dto.response;
 
 import lombok.Getter;
 import lombok.Setter;

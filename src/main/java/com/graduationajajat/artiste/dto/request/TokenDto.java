@@ -1,4 +1,4 @@
-package com.graduationajajat.artiste.dto;
+package com.graduationajajat.artiste.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

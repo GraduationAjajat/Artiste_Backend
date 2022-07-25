@@ -1,6 +1,9 @@
 package com.graduationajajat.artiste.controller;
 
-import com.graduationajajat.artiste.dto.*;
+import com.graduationajajat.artiste.dto.request.LoginDto;
+import com.graduationajajat.artiste.dto.request.TokenDto;
+import com.graduationajajat.artiste.dto.request.TokenRequestDto;
+import com.graduationajajat.artiste.dto.request.UserDto;
 import com.graduationajajat.artiste.model.User;
 import com.graduationajajat.artiste.service.UserService;
 import io.swagger.annotations.Api;
@@ -42,10 +45,18 @@ public class UserController {
 
     // 아이디 중복 확인 controller (존재하면 true)
     @ApiOperation(value = "아이디 중복 확인")
-    @GetMapping("/check/{email}")
+    @GetMapping("/check/email/{email}")
     public ResponseEntity<Boolean> checkUserIdDuplicate(@PathVariable String email) {
         return ResponseEntity.ok(userService.checkIdDuplication(email));
     }
+
+    // 닉네임 중복 확인 controller (존재하면 true)
+    @ApiOperation(value = "닉네임 중복 확인")
+    @GetMapping("/check/nickname/{nickname}")
+    public ResponseEntity<Boolean> checkNicknameDuplicate(@PathVariable String nickname) {
+        return ResponseEntity.ok(userService.checkNicknameDuplication(nickname));
+    }
+
 
     // SpringContext 에서 유저 정보 조회
     @ApiOperation(value = "유저 정보 조회 - SpringContext 내")

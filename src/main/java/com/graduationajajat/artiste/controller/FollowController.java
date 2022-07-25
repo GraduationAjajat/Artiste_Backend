@@ -1,7 +1,8 @@
 package com.graduationajajat.artiste.controller;
 
-import com.graduationajajat.artiste.dto.CommonResponseDto;
-import com.graduationajajat.artiste.dto.ResponseDto;
+import com.graduationajajat.artiste.dto.response.CommonResponseDto;
+import com.graduationajajat.artiste.dto.response.CountFollowResponseDto;
+import com.graduationajajat.artiste.dto.response.ResponseDto;
 import com.graduationajajat.artiste.model.User;
 import com.graduationajajat.artiste.service.FollowService;
 import com.graduationajajat.artiste.service.UserService;
@@ -78,4 +79,13 @@ public class FollowController {
         User user = userService.getMyInfo();
         return ResponseEntity.ok(followService.checkUserFollowing(user.getId(), followingId));
     }
+
+    // 사용자 팔로워/팔로잉 개수 조회
+    @ApiOperation(value = "사용자 팔로워/팔로잉 개수 조회")
+    @GetMapping("/count")
+    public ResponseEntity<CountFollowResponseDto> checkUserFollowing() {
+        User user = userService.getMyInfo();
+        return ResponseEntity.ok(followService.countUserFollow(user.getId()));
+    }
+
 }

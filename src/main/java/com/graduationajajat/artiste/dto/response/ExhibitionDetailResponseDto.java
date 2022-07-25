@@ -1,6 +1,6 @@
-package com.graduationajajat.artiste.dto;
+package com.graduationajajat.artiste.dto.response;
 
-import com.graduationajajat.artiste.model.Art;
+import com.graduationajajat.artiste.model.User;
 import lombok.*;
 
 import java.util.List;
@@ -17,9 +17,9 @@ public class ExhibitionDetailResponseDto {
 
     private String exhibitionName;
 
-    private String username;
+    private User artist;
 
     private String exhibitionDesc;
 
-    private List<Art> artList;
+    private List<ArtResponseDto> artList;
 }

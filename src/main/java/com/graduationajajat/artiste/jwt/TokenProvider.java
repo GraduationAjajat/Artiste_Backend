@@ -1,6 +1,6 @@
 package com.graduationajajat.artiste.jwt;
 
-import com.graduationajajat.artiste.dto.TokenDto;
+import com.graduationajajat.artiste.dto.request.TokenDto;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

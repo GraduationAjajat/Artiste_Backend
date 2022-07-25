@@ -1,4 +1,4 @@
-package com.graduationajajat.artiste.dto;
+package com.graduationajajat.artiste.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.graduationajajat.artiste.model.Authority;
@@ -27,8 +27,10 @@ public class UserDto {
     private String password;
 
     @NotNull
-    @Size(min = 3, max = 50)
     private String username;
+
+    @NotNull
+    private String nickname;
 
     @NotNull
     private LocalDate birthday;
@@ -43,6 +45,7 @@ public class UserDto {
                 .email(email)
                 .password(passwordEncoder.encode(password))
                 .username(username)
+                .nickname(nickname)
                 .birthday(birthday)
                 .gender(gender)
                 .profileImage(profileImage)

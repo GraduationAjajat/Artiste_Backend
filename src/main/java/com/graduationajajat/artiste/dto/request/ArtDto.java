@@ -1,12 +1,8 @@
-package com.graduationajajat.artiste.dto;
+package com.graduationajajat.artiste.dto.request;
 
-import com.graduationajajat.artiste.model.Tag;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
-import java.util.List;
-
 @Getter
 @Setter
 @Builder

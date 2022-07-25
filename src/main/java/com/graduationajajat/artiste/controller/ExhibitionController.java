@@ -1,6 +1,8 @@
 package com.graduationajajat.artiste.controller;
 
-import com.graduationajajat.artiste.dto.*;
+import com.graduationajajat.artiste.dto.request.ExhibitionDto;
+import com.graduationajajat.artiste.dto.response.ExhibitionDetailResponseDto;
+import com.graduationajajat.artiste.dto.response.ExhibitionResponseDto;
 import com.graduationajajat.artiste.model.Tag;
 import com.graduationajajat.artiste.model.User;
 import com.graduationajajat.artiste.service.ExhibitionService;
@@ -53,16 +55,16 @@ public class ExhibitionController {
         return ResponseEntity.ok(exhibitionService.getExhibitionDetail(exhibitionId));
     }
 
-    // 나의 전시 목록 조회
-    @ApiOperation(value = "나의 전시 목록 조회")
+    // 사용자의 전시 목록 조회
+    @ApiOperation(value = "사용자의 전시 목록 조회")
     @GetMapping("/user")
     public ResponseEntity<List<ExhibitionResponseDto>> getUserExhibitions() {
         User user = userService.getMyInfo();
         return ResponseEntity.ok(exhibitionService.getUserExhibitions(user));
     }
 
-    // 작가의 전시 목록 조회
-    @ApiOperation(value = "작가의 전시 목록 조회")
+    // 해당 전시회 작가의 다른 전시 목록 조회
+    @ApiOperation(value = "해당 전시회 작가의 다른 전시 목록 조회")
     @GetMapping("/artist/{exhibitionId}")
     public ResponseEntity<List<ExhibitionResponseDto>> getArtistExhibitions(@PathVariable("exhibitionId") Long exhibitionId) {
         return ResponseEntity.ok(exhibitionService.getArtistExhibitions(exhibitionId));

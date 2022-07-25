@@ -32,6 +32,9 @@ public class User extends Timestamped {
     @Column(name = "username", length = 50, nullable = false)
     private String username;
 
+    @Column(name = "nickname", length = 50, nullable = false)
+    private String nickname;
+
     @Column(name = "birthday", nullable = false)
     private LocalDate birthday;
 

@@ -6,13 +6,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 public interface ExhibitionRepository extends JpaRepository<Exhibition, Long> {
 
+    // 작가로 조회
     List<Exhibition> findAllByUserId(Long id, Sort sort);
 
-    List<Exhibition> findAllByEndDateBefore(LocalDateTime now, Sort sort);
+    // 전시회 마감 시간 이전 조회
+    List<Exhibition> findAllByEndDateAfter(LocalDateTime now, Sort sort);
 
-    List<Exhibition> findAllByExhibitionNameContainsAndEndDateBefore(String search, LocalDateTime now, Sort sort);
+    // 검색어 & 전시회 마감 시간 이전 조회
+    List<Exhibition> findAllByExhibitionNameContainsAndEndDateAfter(String search, LocalDateTime now, Sort sort);
 }

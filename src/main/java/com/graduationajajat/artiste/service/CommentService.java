@@ -1,5 +1,6 @@
 package com.graduationajajat.artiste.service;
 
+import com.graduationajajat.artiste.dto.response.CommentResponseDto;
 import com.graduationajajat.artiste.model.Comment;
 import com.graduationajajat.artiste.model.Exhibition;
 import com.graduationajajat.artiste.model.User;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,9 +28,18 @@ public class CommentService {
 
     // 전시회 댓글 목록 조회
     @Transactional
-    public List<Comment> getCommentsByExhibitionId(Long exhibitionId) {
+    public List<CommentResponseDto> getCommentsByExhibitionId(Long exhibitionId) {
+        List<Comment> commentList = commentRepository.findAllByExhibitionId(exhibitionId);
+        List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
+        for(Comment comment : commentList) {
+            CommentResponseDto commentResponseDto = CommentResponseDto.builder()
+                    .commentId(comment.getId())
+                    .user(comment.getUser())
+                    .content(comment.getContent()).build();
+            commentResponseDtoList.add(commentResponseDto);
 
-        return commentRepository.findAllByExhibitionId(exhibitionId);
+        }
+        return commentResponseDtoList;
     }
 
     // 사용자 전시회 댓글 추가

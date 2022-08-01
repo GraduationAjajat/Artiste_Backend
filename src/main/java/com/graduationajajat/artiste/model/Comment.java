@@ -28,7 +28,7 @@ public class Comment extends Timestamped {
     @JoinColumn(name = "exhibition_id", nullable = false)
     private Exhibition exhibition;
 
-    @Column(name = "content", nullable = false)
-    private String content;
+    @Column(name = "comment_content", nullable = false)
+    private String commentContent;
 
 }

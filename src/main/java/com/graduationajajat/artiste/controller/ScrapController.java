@@ -25,7 +25,7 @@ public class ScrapController {
     private final UserService userService;
     private final ScrapService scrapService;
 
-    // 사용자 찜 목록 조회
+    // 사용자 찜 목록 조회 Controller
     @ApiOperation(value = "사용자 찜 목록 조회")
     @GetMapping("")
     public ResponseEntity<? extends ResponseDto> getScrapsByUserId() {
@@ -34,7 +34,7 @@ public class ScrapController {
         return ResponseEntity.ok().body(new CommonResponseDto<>(scrapList));
     }
 
-    // 사용자 찜 추가
+    // 사용자 찜 추가 Controller
     @ApiOperation(value = "사용자 찜 추가")
     @PostMapping("/{exhibitionId}")
     public ResponseEntity createScrap(@PathVariable("exhibitionId") Long exhibitionId) {
@@ -43,7 +43,7 @@ public class ScrapController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    // 사용자 찜 삭제
+    // 사용자 찜 삭제 Controller
     @ApiOperation(value = "사용자 찜 삭제")
     @DeleteMapping("/unscrap/{exhibitionId}")
     public ResponseEntity deleteScrap(@PathVariable("exhibitionId") Long exhibitionId) {
@@ -53,7 +53,7 @@ public class ScrapController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    // 사용자 찜 여부 조회
+    // 사용자 찜 여부 조회 Controller
     @ApiOperation(value = "사용자 찜 여부 조회")
     @GetMapping("/check/{exhibitionId}")
     public ResponseEntity<Boolean> checkUserScrap(@PathVariable Long exhibitionId) {

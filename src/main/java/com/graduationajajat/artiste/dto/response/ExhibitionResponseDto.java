@@ -1,6 +1,7 @@
 package com.graduationajajat.artiste.dto.response;
 
-import com.graduationajajat.artiste.model.Tag;
+import com.graduationajajat.artiste.model.ExhibitionState;
+import com.graduationajajat.artiste.model.ExhibitionTagName;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -18,15 +19,17 @@ public class ExhibitionResponseDto {
 
     private String exhibitionName;
 
-    private String thumbnail;
+    private String exhibitionThumbnail;
 
-    private String username;
+    private String exhibitionArtistName;
 
-    private LocalDateTime startDate;
+    private LocalDateTime exhibitionStartDate;
 
-    private LocalDateTime endDate;
+    private LocalDateTime exhibitionEndDate;
 
-    private List<Tag> tagList;
+    private List<ExhibitionTagName> tagList;
+
+    private ExhibitionState exhibitionState;
 
     private int scrapCount;
 

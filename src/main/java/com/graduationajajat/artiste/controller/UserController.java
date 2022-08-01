@@ -43,14 +43,14 @@ public class UserController {
         return ResponseEntity.ok(userService.signup(userDto));
     }
 
-    // 아이디 중복 확인 controller (존재하면 true)
+    // 아이디 중복 확인 Controller (존재하면 true)
     @ApiOperation(value = "아이디 중복 확인")
     @GetMapping("/check/email/{email}")
     public ResponseEntity<Boolean> checkUserIdDuplicate(@PathVariable String email) {
         return ResponseEntity.ok(userService.checkIdDuplication(email));
     }
 
-    // 닉네임 중복 확인 controller (존재하면 true)
+    // 닉네임 중복 확인 Controller (존재하면 true)
     @ApiOperation(value = "닉네임 중복 확인")
     @GetMapping("/check/nickname/{nickname}")
     public ResponseEntity<Boolean> checkNicknameDuplicate(@PathVariable String nickname) {
@@ -58,21 +58,21 @@ public class UserController {
     }
 
 
-    // SpringContext 에서 유저 정보 조회
+    // SpringContext 에서 유저 정보 조회 Controller
     @ApiOperation(value = "유저 정보 조회 - SpringContext 내")
     @GetMapping("")
     public ResponseEntity<User> getMyUserInfo() {
         return ResponseEntity.ok(userService.getMyInfo());
     }
 
-    // 이메일로 유저 정보 조회
+    // 이메일로 유저 정보 조회 Controller
     @ApiOperation(value = "유저 정보 조회 - 이메일")
     @GetMapping("/{email}")
     public ResponseEntity<User> getUserInfo(@PathVariable String email) {
         return ResponseEntity.ok(userService.getUserInfo(email));
     }
 
-    // 회원 정보 수정
+    // 회원 정보 수정 Controller
     @ApiOperation(value = "회원 정보 수정")
     @PutMapping("")
     public ResponseEntity<Object> update(@Valid @RequestBody UserDto userDto) {

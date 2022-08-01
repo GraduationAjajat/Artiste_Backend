@@ -17,7 +17,7 @@ public class ExhibitionDetailResponseDto {
 
     private String exhibitionName;
 
-    private User artist;
+    private User exhibitionArtist;
 
     private String exhibitionDesc;
 

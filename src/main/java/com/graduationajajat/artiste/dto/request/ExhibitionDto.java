@@ -1,7 +1,6 @@
 package com.graduationajajat.artiste.dto.request;
 
-import com.graduationajajat.artiste.dto.request.ArtDto;
-import com.graduationajajat.artiste.model.Tag;
+import com.graduationajajat.artiste.model.ExhibitionTagName;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
@@ -20,16 +19,16 @@ public class ExhibitionDto {
     private String exhibitionName;
 
     @NotNull
-    private LocalDateTime startDate;
+    private LocalDateTime exhibitionStartDate;
 
     @NotNull
-    private LocalDateTime endDate;
+    private LocalDateTime exhibitionEndDate;
 
     @NotNull
     private String exhibitionDesc;
 
     @NotNull
-    private List<Tag> tagList;
+    private List<ExhibitionTagName> tagList;
 
     @NotNull
     private List<ArtDto> artList;

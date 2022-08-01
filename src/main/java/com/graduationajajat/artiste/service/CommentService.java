@@ -35,7 +35,7 @@ public class CommentService {
             CommentResponseDto commentResponseDto = CommentResponseDto.builder()
                     .commentId(comment.getId())
                     .user(comment.getUser())
-                    .content(comment.getContent()).build();
+                    .commentContent(comment.getCommentContent()).build();
             commentResponseDtoList.add(commentResponseDto);
 
         }
@@ -44,9 +44,9 @@ public class CommentService {
 
     // 사용자 전시회 댓글 추가
     @Transactional
-    public void createComment(User user, Long exhibitionId, String content) {
+    public void createComment(User user, Long exhibitionId, String commentContent) {
         Exhibition exhibition = exhibitionRepository.findById(exhibitionId).get();
-        Comment comment = Comment.builder().user(user).exhibition(exhibition).content(content).build();
+        Comment comment = Comment.builder().user(user).exhibition(exhibition).commentContent(commentContent).build();
 
         exhibition.setCommentCount(exhibition.getCommentCount() + 1); // 댓글 수 증가
 

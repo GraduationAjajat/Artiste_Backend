@@ -15,6 +15,6 @@ public class CommentResponseDto {
 
     private User user;
 
-    private String content;
+    private String commentContent;
 
 }

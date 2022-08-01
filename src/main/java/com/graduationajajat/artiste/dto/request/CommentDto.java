@@ -15,5 +15,5 @@ public class CommentDto {
     private Long exhibitionId;
 
     @NotNull
-    private String content;
+    private String commentContent;
 }

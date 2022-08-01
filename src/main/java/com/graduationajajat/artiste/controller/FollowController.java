@@ -25,7 +25,7 @@ public class FollowController {
     private final UserService userService;
     private final FollowService followService;
 
-    // 사용자 팔로워 목록 조회
+    // 사용자 팔로워 목록 조회 Controller
     @ApiOperation(value = "사용자 팔로워 목록 조회")
     @GetMapping("/follower")
     public ResponseEntity<? extends ResponseDto> getFollowersByFollowingId() {
@@ -34,7 +34,7 @@ public class FollowController {
         return ResponseEntity.ok().body(new CommonResponseDto<>(followerList));
     }
 
-    // 사용자 팔로잉 목록 조회
+    // 사용자 팔로잉 목록 조회 Controller
     @ApiOperation(value = "사용자 팔로잉 목록 조회")
     @GetMapping("/following")
     public ResponseEntity<? extends ResponseDto> getFollowingsByFollowingId() {
@@ -43,7 +43,7 @@ public class FollowController {
         return ResponseEntity.ok().body(new CommonResponseDto<>(followerList));
     }
 
-    // 사용자 팔로잉 추가
+    // 사용자 팔로잉 추가 Controller
     @ApiOperation(value = "사용자 팔로잉 추가")
     @PostMapping("/{followingId}")
     public ResponseEntity createFollowing(@PathVariable("followingId") Long followingId) {
@@ -52,7 +52,7 @@ public class FollowController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    // 사용자 팔로워 삭제
+    // 사용자 팔로워 삭제 Controller
     @ApiOperation(value = "사용자 팔로워 삭제")
     @DeleteMapping("/follower/{followerId}")
     public ResponseEntity deleteFollower(@PathVariable("followerId") Long followerId) {
@@ -62,7 +62,7 @@ public class FollowController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    // 사용자 팔로잉 삭제
+    // 사용자 팔로잉 삭제 Controller
     @ApiOperation(value = "사용자 팔로잉 삭제")
     @DeleteMapping("/following/{followingId}")
     public ResponseEntity deleteFollowing(@PathVariable("followingId") Long followingId) {
@@ -72,7 +72,7 @@ public class FollowController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    // 사용자 팔로잉 여부 조회
+    // 사용자 팔로잉 여부 조회 Controller
     @ApiOperation(value = "사용자 팔로잉 여부 조회")
     @GetMapping("/check/{followingId}")
     public ResponseEntity<Boolean> checkUserFollowing(@PathVariable("followingId") Long followingId) {
@@ -80,7 +80,7 @@ public class FollowController {
         return ResponseEntity.ok(followService.checkUserFollowing(user.getId(), followingId));
     }
 
-    // 사용자 팔로워/팔로잉 개수 조회
+    // 사용자 팔로워/팔로잉 개수 조회 Controller
     @ApiOperation(value = "사용자 팔로워/팔로잉 개수 조회")
     @GetMapping("/count")
     public ResponseEntity<CountFollowResponseDto> checkUserFollowing() {

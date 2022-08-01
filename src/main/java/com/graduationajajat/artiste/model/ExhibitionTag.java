@@ -26,6 +26,6 @@ public class ExhibitionTag {
 
     @Column(name = "tag", nullable = false)
     @Enumerated(value = EnumType.STRING)
-    private Tag tag;
+    private ExhibitionTagName tag;
 
 }

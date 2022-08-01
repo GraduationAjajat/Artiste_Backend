@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Data
@@ -30,14 +28,17 @@ public class Exhibition extends Timestamped {
     @Column(name = "exhibition_name", nullable = false)
     private String exhibitionName;
 
-    @Column(name = "start_date", nullable = false)
-    private LocalDateTime startDate;
+    @Column(name = "exhibition_start_date", nullable = false)
+    private LocalDateTime exhibitionStartDate;
 
-    @Column(name = "end_date", nullable = false)
-    private LocalDateTime endDate;
+    @Column(name = "exhibition_end_date", nullable = false)
+    private LocalDateTime exhibitionEndDate;
 
     @Column(name = "exhibition_desc", nullable = false)
     private String exhibitionDesc;
+
+    @Column(name = "exhibition_state", nullable = false)
+    private ExhibitionState exhibitionState;
 
     @Column(name = "scrap_count")
     private int scrapCount = 0;

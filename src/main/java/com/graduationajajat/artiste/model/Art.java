@@ -27,7 +27,7 @@ public class Art extends Timestamped {
     @Column(name = "art_image", nullable = false)
     private String artImage;
 
-    @Column(name = "art_name", nullable = false)
+    @Column(name = "art_name", nullable = false, length = 50)
     private String artName;
 
     @Column(name = "art_desc", nullable = false)

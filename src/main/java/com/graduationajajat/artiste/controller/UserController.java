@@ -40,7 +40,14 @@ public class UserController {
     @ApiOperation(value = "회원가입")
     @PostMapping("/signup")
     public ResponseEntity<Object> signup(@Valid @RequestBody UserDto userDto) {
-        return ResponseEntity.ok(userService.signup(userDto));
+        return ResponseEntity.ok(userService.signup(userDto, "ROLE_USER"));
+    }
+
+    // 관리자 회원가입 Controller
+    @ApiOperation(value = "관리자 회원가입")
+    @PostMapping("/admin/signup")
+    public ResponseEntity<Object> signupAdmin(@Valid @RequestBody UserDto userDto) {
+        return ResponseEntity.ok(userService.signup(userDto, "ROLE_ADMIN"));
     }
 
     // 아이디 중복 확인 Controller (존재하면 true)

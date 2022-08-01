@@ -14,6 +14,9 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findAllByExhibitionId(Long exhibitionId);
 
     // 사용자 댓글 삭제
-    void deleteByUserIdAndExhibitionId(Long id, Long exhibitionId);
+    void deleteByUserIdAndId(Long userId, Long commentId);
+
+    // 사용자 댓글 개수 조회
+    Long countByUserId(Long userId);
 
 }

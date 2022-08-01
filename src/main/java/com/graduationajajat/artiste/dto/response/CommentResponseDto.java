@@ -3,6 +3,8 @@ package com.graduationajajat.artiste.dto.response;
 import com.graduationajajat.artiste.model.User;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @Builder
@@ -16,5 +18,7 @@ public class CommentResponseDto {
     private User user;
 
     private String commentContent;
+
+    private LocalDateTime commentDate;
 
 }

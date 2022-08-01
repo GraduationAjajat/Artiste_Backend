@@ -37,7 +37,7 @@ public class ExhibitionService {
                     .exhibitionStartDate(exhibitionDto.getExhibitionStartDate())
                     .exhibitionEndDate(exhibitionDto.getExhibitionEndDate())
                     .exhibitionDesc(exhibitionDto.getExhibitionDesc())
-                    .exhibitionState(ExhibitionState.STANDBY)
+                    .exhibitionState(ExhibitionState.WAIT)
                     .build();
 
         exhibition = exhibitionRepository.save(exhibition);
@@ -77,6 +77,22 @@ public class ExhibitionService {
                 .findAllByExhibitionStateAndExhibitionEndDateAfter(ExhibitionState.APPROVAL, now, sort);
 
         return getExhibitionWithTagsList(exhibitionList, tags);
+    }
+
+    // 대기 중인 전시회 전체 조회
+    public List<ExhibitionResponseDto> getWaitingExhibitions() {
+
+        List<Exhibition> exhibitionList = exhibitionRepository
+                .findAllByExhibitionState(ExhibitionState.WAIT);
+
+        return getExhibitionList(exhibitionList);
+    }
+
+    // 대기 중인 전시회 승인
+    @Transactional
+    public void approveExhibitions(Long exhibitionId) {
+        Exhibition exhibition = exhibitionRepository.getById(exhibitionId);
+        exhibition.setExhibitionState(ExhibitionState.APPROVAL);
     }
 
     // 승인된 전시회 검색

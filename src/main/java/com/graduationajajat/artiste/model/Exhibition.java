@@ -25,7 +25,7 @@ public class Exhibition extends Timestamped {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "exhibition_name", nullable = false)
+    @Column(name = "exhibition_name", nullable = false, length = 50)
     private String exhibitionName;
 
     @Column(name = "exhibition_start_date", nullable = false)

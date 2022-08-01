@@ -20,14 +20,11 @@ public class CommentService {
     private final ExhibitionRepository exhibitionRepository;
 
     // 사용자 댓글 목록 조회
-    @Transactional
     public List<Comment> getCommentsByUserId(Long userId) {
-
         return commentRepository.findAllByUserId(userId);
     }
 
     // 전시회 댓글 목록 조회
-    @Transactional
     public List<CommentResponseDto> getCommentsByExhibitionId(Long exhibitionId) {
         List<Comment> commentList = commentRepository.findAllByExhibitionId(exhibitionId);
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
@@ -35,7 +32,8 @@ public class CommentService {
             CommentResponseDto commentResponseDto = CommentResponseDto.builder()
                     .commentId(comment.getId())
                     .user(comment.getUser())
-                    .commentContent(comment.getCommentContent()).build();
+                    .commentContent(comment.getCommentContent())
+                    .commentDate(comment.getCreatedDate()).build();
             commentResponseDtoList.add(commentResponseDto);
 
         }
@@ -56,10 +54,23 @@ public class CommentService {
     // 사용자 댓글 삭제
     @Transactional
     public void deleteComment(User user, Long commentId) {
-        commentRepository.deleteByUserIdAndExhibitionId(user.getId(), commentId);
-        Exhibition exhibition = exhibitionRepository.findById(commentId).get();
+        commentRepository.deleteByUserIdAndId(user.getId(), commentId);
+        Exhibition exhibition = commentRepository.findById(commentId).get().getExhibition();
         exhibition.setCommentCount(exhibition.getCommentCount() - 1); // 댓글 수 감소
 
     }
 
+    // 관리자 - 회원 댓글 삭제
+    @Transactional
+    public void deleteComment(Long commentId) {
+        commentRepository.deleteById(commentId);
+        Exhibition exhibition = commentRepository.findById(commentId).get().getExhibition();
+        exhibition.setCommentCount(exhibition.getCommentCount() - 1); // 댓글 수 감소
+
+    }
+
+    // 관리자 - 회원 댓글 조회
+    public List<Comment> getUserComments(Long userId) {
+        return commentRepository.findAllByUserId(userId);
+    }
 }

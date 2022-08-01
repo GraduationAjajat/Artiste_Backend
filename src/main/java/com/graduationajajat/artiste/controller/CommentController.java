@@ -16,8 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -49,7 +47,7 @@ public class CommentController {
     // 사용자 댓글 추가 Controller
     @ApiOperation(value = "사용자 댓글 추가")
     @PostMapping("")
-    public ResponseEntity createComment(@Valid @RequestBody CommentDto commentDto) {
+    public ResponseEntity createComment(@RequestBody CommentDto commentDto) {
         User user = userService.getMyInfo();
         commentService.createComment(user, commentDto.getExhibitionId(), commentDto.getCommentContent());
         return new ResponseEntity(HttpStatus.OK);

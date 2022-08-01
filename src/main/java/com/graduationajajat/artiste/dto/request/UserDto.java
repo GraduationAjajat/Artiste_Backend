@@ -9,6 +9,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -39,18 +41,5 @@ public class UserDto {
     private int gender;
 
     private String profileImage;
-
-    public User toUser(PasswordEncoder passwordEncoder) {
-        return User.builder()
-                .email(email)
-                .password(passwordEncoder.encode(password))
-                .username(username)
-                .nickname(nickname)
-                .birthday(birthday)
-                .gender(gender)
-                .profileImage(profileImage)
-                .authority(Authority.ROLE_USER)
-                .build();
-    }
 
 }

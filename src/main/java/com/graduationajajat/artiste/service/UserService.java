@@ -4,9 +4,13 @@ import com.graduationajajat.artiste.dto.request.LoginDto;
 import com.graduationajajat.artiste.dto.request.TokenDto;
 import com.graduationajajat.artiste.dto.request.TokenRequestDto;
 import com.graduationajajat.artiste.dto.request.UserDto;
+import com.graduationajajat.artiste.dto.response.UserResponseDto;
 import com.graduationajajat.artiste.jwt.TokenProvider;
+import com.graduationajajat.artiste.model.Authority;
 import com.graduationajajat.artiste.model.RefreshToken;
 import com.graduationajajat.artiste.model.User;
+import com.graduationajajat.artiste.repository.CommentRepository;
+import com.graduationajajat.artiste.repository.ExhibitionRepository;
 import com.graduationajajat.artiste.repository.RefreshTokenRepository;
 import com.graduationajajat.artiste.repository.UserRepository;
 import com.graduationajajat.artiste.util.SecurityUtil;
@@ -18,6 +22,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -27,6 +36,8 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final ExhibitionRepository exhibitionRepository;
+    private final CommentRepository commentRepository;
 
     @Transactional
     public TokenDto login(LoginDto loginDto) {
@@ -84,12 +95,24 @@ public class UserService {
 
     // 회원가입
     @Transactional
-    public User signup(UserDto userDto) {
-        if (userRepository.existsByEmail(userDto.getEmail())) {
-            throw new RuntimeException("이미 가입되어 있는 유저입니다");
-        }
+    public User signup(UserDto userDto, String role) {
 
-        User user = userDto.toUser(passwordEncoder);
+        Authority authority = Authority.builder()
+                .authorityName(role)
+                .build();
+
+        User user = User.builder()
+                .email(userDto.getEmail())
+                .username(userDto.getUsername())
+                .password(passwordEncoder.encode(userDto.getPassword()))
+                .birthday(userDto.getBirthday())
+                .gender(userDto.getGender())
+                .profileImage(userDto.getProfileImage())
+                .nickname(userDto.getNickname())
+                .authorities(Collections.singleton(authority))
+                .activated(true)
+                .build();
+
         return userRepository.save(user);
     }
 
@@ -108,8 +131,7 @@ public class UserService {
     // 현재 SecurityContext 에 있는 유저 정보 조회
     @Transactional(readOnly = true)
     public User getMyInfo() {
-        return userRepository.findByEmail(SecurityUtil.getCurrentUsername())
-                .orElseThrow(() -> new RuntimeException("로그인 유저 정보가 없습니다."));
+        return SecurityUtil.getCurrentUsername().flatMap(userRepository::findOneWithAuthoritiesByEmail).get();
     }
 
     // 회원 정보 수정
@@ -133,4 +155,26 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("유저 정보가 없습니다."));
     }
 
+    // 관리자 - 회원 관리 목록 조회
+    public List<UserResponseDto> getUsers() {
+        List<UserResponseDto> userResponseDtoList = new ArrayList<>();
+        Authority authority = Authority.builder()
+                .authorityName("ROLE_USER")
+                .build();
+        List<User> userList = userRepository.findAllByAuthoritiesIn(Collections.singleton(authority));
+        for(User user : userList) {
+            Long exhibitionCount = exhibitionRepository.countByUserId(user.getId());
+            Long commentCount = commentRepository.countByUserId(user.getId());
+            UserResponseDto userResponseDto = UserResponseDto.builder()
+                    .userId(user.getId())
+                    .nickname(user.getNickname())
+                    .profileImage(user.getProfileImage())
+                    .registerDate(user.getCreatedDate())
+                    .exhibitionCount(exhibitionCount)
+                    .commentCount(commentCount).build();
+            userResponseDtoList.add(userResponseDto);
+        }
+
+        return userResponseDtoList;
+    }
 }

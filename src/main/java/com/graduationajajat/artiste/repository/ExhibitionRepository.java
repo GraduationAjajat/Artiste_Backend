@@ -29,4 +29,10 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition, Long> {
 
     // 전시회 아이디로 승인된 전시회 조회
     Optional<Exhibition> findByIdAndExhibitionState(Long exhibitionId, ExhibitionState approval);
+
+    // 대기 중인 전시회 조회
+    List<Exhibition> findAllByExhibitionState(ExhibitionState wait);
+
+    // 사용자 전시회 개수 조회
+    Long countByUserId(Long userId);
 }

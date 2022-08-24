@@ -35,7 +35,7 @@ public class ExhibitionController {
     }
 
     // 마감 전 전시회 전체 조회 Controller (승인만)
-    @ApiOperation(value = "전시회 페이지 조회(태그[풍경, 인물, 꽃, 정물, 모네, 고흐, 바로크, 르네상스], 정렬[최신순(createDate), 조회순(hits), 좋아요순(scrapCount)])")
+    @ApiOperation(value = "전시회 페이지 조회(태그[풍경, 인물, 꽃, 정물, 모네, 고흐, 바로크, 르네상스], 정렬[최신순(createdDate), 조회순(hits), 좋아요순(scrapCount)])")
     @GetMapping("")
     public ResponseEntity<List<ExhibitionResponseDto>> getExhibitions(@RequestParam(name = "tags", required = false) List<ExhibitionTagName> tags, @RequestParam(name = "sortBy", required = false) String sortBy) {
         return ResponseEntity.ok(exhibitionService.getExhibitions(tags, sortBy));

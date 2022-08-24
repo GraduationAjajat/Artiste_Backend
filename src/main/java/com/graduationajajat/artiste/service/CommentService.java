@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -43,29 +44,31 @@ public class CommentService {
     // 사용자 전시회 댓글 추가
     @Transactional
     public void createComment(User user, Long exhibitionId, String commentContent) {
-        Exhibition exhibition = exhibitionRepository.findById(exhibitionId).get();
-        Comment comment = Comment.builder().user(user).exhibition(exhibition).commentContent(commentContent).build();
-
-        exhibition.setCommentCount(exhibition.getCommentCount() + 1); // 댓글 수 증가
+        Optional<Exhibition> exhibition = exhibitionRepository.findById(exhibitionId);
+        Comment comment = Comment.builder().user(user).exhibition(exhibition.get()).commentContent(commentContent).build();
 
         commentRepository.save(comment);
+
+        exhibition.get().setCommentCount(exhibition.get().getCommentCount() + 1); // 댓글 수 증가
     }
 
     // 사용자 댓글 삭제
     @Transactional
     public void deleteComment(User user, Long commentId) {
-        commentRepository.deleteByUserIdAndId(user.getId(), commentId);
-        Exhibition exhibition = commentRepository.findById(commentId).get().getExhibition();
+        Optional<Comment> comment = commentRepository.findById(commentId);
+        Exhibition exhibition = comment.get().getExhibition();
         exhibition.setCommentCount(exhibition.getCommentCount() - 1); // 댓글 수 감소
+        commentRepository.deleteByUserIdAndId(user.getId(), commentId);
 
     }
 
     // 관리자 - 회원 댓글 삭제
     @Transactional
     public void deleteComment(Long commentId) {
-        commentRepository.deleteById(commentId);
-        Exhibition exhibition = commentRepository.findById(commentId).get().getExhibition();
+        Optional<Comment> comment = commentRepository.findById(commentId);
+        Exhibition exhibition = comment.get().getExhibition();
         exhibition.setCommentCount(exhibition.getCommentCount() - 1); // 댓글 수 감소
+        commentRepository.deleteById(commentId);
 
     }
 

@@ -174,7 +174,7 @@ public class ExhibitionService {
             List<ExhibitionTagName> tagList = getTagList(exhibition.getId());
 
             // 카테고리 분류
-            if(!tags.isEmpty() && !Objects.equals(tagList, tags)) continue;
+            if(tags != null && !tags.isEmpty() && !Objects.equals(tagList, tags)) continue;
             List<Art> artList = artRepository.findAllByExhibitionId(exhibition.getId());
 
             exhibitionResponseDtoList.add(ExhibitionResponseDto.builder()

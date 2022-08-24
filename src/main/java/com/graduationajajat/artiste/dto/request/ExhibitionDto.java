@@ -15,22 +15,16 @@ import java.util.List;
 // 전시회 등록
 public class ExhibitionDto {
 
-    @NotNull
     private String exhibitionName;
 
-    @NotNull
     private LocalDateTime exhibitionStartDate;
 
-    @NotNull
     private LocalDateTime exhibitionEndDate;
 
-    @NotNull
     private String exhibitionDesc;
 
-    @NotNull
     private List<ExhibitionTagName> tagList;
 
-    @NotNull
     private List<ArtDto> artList;
 
 }

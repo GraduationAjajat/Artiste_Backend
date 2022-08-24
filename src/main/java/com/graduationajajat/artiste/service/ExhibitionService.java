@@ -25,6 +25,7 @@ public class ExhibitionService {
     private final ExhibitionRepository exhibitionRepository;
     private final ExhibitionTagRepository exhibitionTagRepository;
     private final ArtRepository artRepository;
+    private final FileProcessService fileProcessService;
 
     // 전시회 등록
     @Transactional
@@ -54,9 +55,10 @@ public class ExhibitionService {
         // 작품 등록
         List<Art> artList = new ArrayList<>();
         for(ArtDto artDto : exhibitionDto.getArtList()) {
+            String url = fileProcessService.uploadImage(artDto.getArtImage(), FileFolder.ART_IMAGES);
             Art art = Art.builder()
                     .exhibition(exhibition)
-                    .artImage(artDto.getArtImage())
+                    .artImage(url)
                     .artName(artDto.getArtName())
                     .artDesc(artDto.getArtDesc())
                     .build();

@@ -1,19 +1,27 @@
 package com.graduationajajat.artiste.controller;
 
+import com.graduationajajat.artiste.dto.request.ArtDto;
 import com.graduationajajat.artiste.dto.request.ExhibitionDto;
 import com.graduationajajat.artiste.dto.response.ExhibitionDetailResponseDto;
 import com.graduationajajat.artiste.dto.response.ExhibitionResponseDto;
 import com.graduationajajat.artiste.model.ExhibitionTagName;
+import com.graduationajajat.artiste.model.FileFolder;
 import com.graduationajajat.artiste.model.User;
 import com.graduationajajat.artiste.service.ExhibitionService;
+import com.graduationajajat.artiste.service.FileProcessService;
 import com.graduationajajat.artiste.service.UserService;
+import com.sun.istack.Nullable;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -29,8 +37,22 @@ public class ExhibitionController {
     // 전시회 등록 Controller
     @ApiOperation(value = "전시회 등록")
     @PostMapping("")
-    public ResponseEntity<Object> createExhibition(@Valid @RequestBody ExhibitionDto exhibitionDto) {
+    public ResponseEntity<Object> createExhibition(@Nullable @RequestPart(value = "artImageList", required = false) List<MultipartFile> artImageList,
+                                                   @RequestPart(value = "artNameList", required = false) List<String> artNameList,
+                                                   @RequestPart(value = "artDescList", required = false) List<String> artDescList,
+                                                   @RequestPart(value = "exhibitionName", required = false) String exhibitionName,
+                                                   @RequestPart(value = "exhibitionStartDate", required = false) LocalDateTime exhibitionStartDate,
+                                                   @RequestPart(value = "exhibitionEndDate", required = false) LocalDateTime exhibitionEndDate,
+                                                   @RequestPart(value = "exhibitionDesc", required = false) String exhibitionDesc,
+                                                   @RequestPart(value = "tagList", required = false) List<ExhibitionTagName> tagList) {
         User user = userService.getMyInfo();
+        List<ArtDto> artDtoList = new ArrayList<>();
+        for(int i = 0; i < artImageList.size(); i++) {
+            ArtDto artDto = ArtDto.builder().artImage(artImageList.get(i)).artName(artNameList.get(i)).artDesc(artDescList.get(i)).build();
+            artDtoList.add(artDto);
+        }
+        ExhibitionDto exhibitionDto = ExhibitionDto.builder()
+                .exhibitionName(exhibitionName).exhibitionStartDate(exhibitionStartDate).exhibitionEndDate(exhibitionEndDate).exhibitionDesc(exhibitionDesc).tagList(tagList).artList(artDtoList).build();
         return ResponseEntity.ok(exhibitionService.createExhibition(user, exhibitionDto));
     }
 

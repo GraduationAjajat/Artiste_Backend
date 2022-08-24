@@ -1,6 +1,7 @@
 package com.graduationajajat.artiste.dto.request;
 
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
 @Getter
@@ -12,7 +13,7 @@ import javax.validation.constraints.NotNull;
 public class ArtDto {
 
     @NotNull
-    private String artImage;
+    private MultipartFile artImage;
 
     @NotNull
     private String artName;

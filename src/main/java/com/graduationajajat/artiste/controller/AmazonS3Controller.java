@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,8 +26,8 @@ public class AmazonS3Controller {
      * Amazon S3에 파일 업로드
      * @return 성공 시 200 Success와 함께 업로드 된 파일의 파일명 리스트 반환
      */
-    @ApiOperation(value = "Amazon S3에 파일 업로드")
-    @PostMapping(value = "/art")
+    @ApiOperation(value = "Amazon S3에 파일 업로드", produces = "multipart/form-data")
+    @PostMapping(value = "/art", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<List<String>> uploadArtList(@RequestParam("artList") List<MultipartFile> artList) {
         List<String> urlList = new ArrayList<>();
         for(MultipartFile multipartFile : artList) {

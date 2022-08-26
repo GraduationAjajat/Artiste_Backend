@@ -57,10 +57,3 @@ jobs:
             region: ap-northeast-2
             deployment_package: deploy/deploy.zip
 
-      - name: SetupMySQL
-        uses: samin/mysql-action@v1
-        with:
-            character set server: 'utf8'
-            mysql database: 'artiste'
-            mysql user: 'admin'
-            mysql password: ${{ secrets.MYSQL_PASSWORD }}

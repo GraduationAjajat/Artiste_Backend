@@ -16,6 +16,7 @@ configurations {
 
 repositories {
 	mavenCentral()
+	maven { url 'https://repo.spring.io/libs-milestone'}
 }
 
 dependencies {
@@ -43,6 +44,10 @@ dependencies {
 
 	// s3
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
+	testImplementation("org.junit.vintage:junit-vintage-engine") {
+		exclude group: "org.hamcrest", module: "hamcrest-core"
+	}
 }
 
 tasks.named('test') {

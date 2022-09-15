@@ -70,7 +70,7 @@ public class ExhibitionService {
     }
 
     // 마감 전 승인된 전시회 전체 조회
-    public List<ExhibitionResponseDto> getExhibitions(List<ExhibitionTagName> tags, String sortBy) {
+    public List<ExhibitionResponseDto> getExhibitions(ExhibitionTagName tags, String sortBy) {
         if(sortBy == null) sortBy = "createdDate";
         LocalDateTime now = LocalDateTime.now(); // 지금 기준 마감 전
         Sort sort = Sort.by(Sort.Direction.DESC, sortBy); // 정렬
@@ -98,7 +98,7 @@ public class ExhibitionService {
     }
 
     // 승인된 전시회 검색
-    public List<ExhibitionResponseDto> getSearchExhibitions(String search, List<ExhibitionTagName> tags, String sortBy) {
+    public List<ExhibitionResponseDto> getSearchExhibitions(String search, ExhibitionTagName tags, String sortBy) {
         if(sortBy == null) sortBy = "createdDate";
         LocalDateTime now = LocalDateTime.now(); // 지금 기준 마감 전
         Sort sort = Sort.by(Sort.Direction.DESC, sortBy); // 정렬
@@ -168,7 +168,7 @@ public class ExhibitionService {
 
     // 전시회 조회 메소드 (with 태그)
     private List<ExhibitionResponseDto> getExhibitionWithTagsList(List<Exhibition> exhibitionList,
-                                                                  List<ExhibitionTagName> tags) {
+                                                                  ExhibitionTagName tags) {
         List<ExhibitionResponseDto> exhibitionResponseDtoList = new ArrayList<>();
         for(Exhibition exhibition : exhibitionList) {
 
@@ -176,7 +176,7 @@ public class ExhibitionService {
             List<ExhibitionTagName> tagList = getTagList(exhibition.getId());
 
             // 카테고리 분류
-            if(tags != null && !tags.isEmpty() && !Objects.equals(tagList, tags)) continue;
+            if(tags != null && !tagList.contains(tags)) continue;
             List<Art> artList = artRepository.findAllByExhibitionId(exhibition.getId());
 
             exhibitionResponseDtoList.add(ExhibitionResponseDto.builder()

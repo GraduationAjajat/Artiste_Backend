@@ -38,6 +38,7 @@ public class Exhibition extends Timestamped {
     private String exhibitionDesc;
 
     @Column(name = "exhibition_state", nullable = false)
+    @Enumerated(value = EnumType.STRING)
     private ExhibitionState exhibitionState;
 
     @Column(name = "scrap_count")

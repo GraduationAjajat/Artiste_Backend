@@ -14,9 +14,14 @@ import com.sun.istack.Nullable;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
@@ -56,17 +61,41 @@ public class ExhibitionController {
         return ResponseEntity.ok(exhibitionService.createExhibition(user, exhibitionDto));
     }
 
+    // Style-Transfer API 호출 Controller
+//    @ApiOperation(value = "이미지 변환(style-transfer)")
+//    @PostMapping("/transfer")
+//    public ResponseEntity<Object> styleTransfer(@RequestPart(value = "image1") MultipartFile styleFile, @RequestPart(value = "image2") MultipartFile contentFile) {
+//        // 이미지 변환
+//        String transferUrl = "http://ec2-3-35-8-193.ap-northeast-2.compute.amazonaws.com:4000/transfer";
+//
+//        // Header
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+//
+//        // Body
+//        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+//        body.add("style_img", styleFile);
+//        body.add("content_img", contentFile);
+//
+//        // POST
+//        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+//        RestTemplate restTemplate = new RestTemplate();
+//        ResponseEntity<String> transferResponse = restTemplate.postForEntity(transferUrl, requestEntity, String.class);
+//
+//        return ResponseEntity.ok(transferResponse);
+//    }
+
     // 마감 전 전시회 전체 조회 Controller (승인만)
     @ApiOperation(value = "전시회 페이지 조회(태그[풍경, 인물, 꽃, 정물, 모네, 고흐, 바로크, 르네상스], 정렬[최신순(createdDate), 조회순(hits), 좋아요순(scrapCount)])")
     @GetMapping("")
-    public ResponseEntity<List<ExhibitionResponseDto>> getExhibitions(@RequestParam(name = "tags", required = false) List<ExhibitionTagName> tags, @RequestParam(name = "sortBy", required = false) String sortBy) {
+    public ResponseEntity<List<ExhibitionResponseDto>> getExhibitions(@RequestParam(name = "tags", required = false) ExhibitionTagName tags, @RequestParam(name = "sortBy", required = false) String sortBy) {
         return ResponseEntity.ok(exhibitionService.getExhibitions(tags, sortBy));
     }
 
     // 전시회 검색 Controller (승인만)
     @ApiOperation(value = "전시회명 검색")
     @GetMapping("/search")
-    public ResponseEntity<List<ExhibitionResponseDto>> getSearchExhibitions(@RequestParam(name = "search") String search, @RequestParam(name = "tags", required = false) List<ExhibitionTagName> tags, @RequestParam(name = "sortBy", required = false) String sortBy) {
+    public ResponseEntity<List<ExhibitionResponseDto>> getSearchExhibitions(@RequestParam(name = "search") String search, @RequestParam(name = "tags", required = false) ExhibitionTagName tags, @RequestParam(name = "sortBy", required = false) String sortBy) {
         return ResponseEntity.ok(exhibitionService.getSearchExhibitions(search, tags, sortBy));
     }
 

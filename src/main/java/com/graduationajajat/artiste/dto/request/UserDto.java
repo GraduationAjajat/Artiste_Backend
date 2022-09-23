@@ -1,16 +1,11 @@
 package com.graduationajajat.artiste.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.graduationajajat.artiste.model.Authority;
-import com.graduationajajat.artiste.model.User;
 import lombok.*;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter

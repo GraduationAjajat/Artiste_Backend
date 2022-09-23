@@ -14,6 +14,9 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition, Long> {
     // 사용자의 전시회 조회 (승인 대기 여부 상관없이)
     List<Exhibition> findAllByUserId(Long userId, Sort sort);
 
+    // 작가의의 전시회 조회 (승인 대기 여부 상관없이)
+    List<Exhibition> findAllByUserIdAndIdNot(Long userId, Long artisteId, Sort sort);
+
     // 작가로 승인된 전시회 조회
     List<Exhibition> findAllByUserIdAndExhibitionState(Long userId, ExhibitionState exhibitionState, Sort sort);
 

@@ -12,9 +12,8 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-// 전시회 목록
-public class ExhibitionResponseDto {
-
+// 대기 중인 전시회 목록
+public class WaitingExhibitionResponseDto {
     private Long exhibitionId;
 
     private String exhibitionName;
@@ -30,11 +29,4 @@ public class ExhibitionResponseDto {
     private List<ExhibitionTagName> tagList;
 
     private ExhibitionState exhibitionState;
-
-    private boolean scrapFlag;
-
-    private int scrapCount;
-
-    private int commentCount;
-
 }

@@ -89,14 +89,16 @@ public class ExhibitionController {
     @ApiOperation(value = "전시회 페이지 조회(태그[풍경, 인물, 꽃, 정물, 모네, 고흐, 바로크, 르네상스], 정렬[최신순(createdDate), 조회순(hits), 좋아요순(scrapCount)])")
     @GetMapping("")
     public ResponseEntity<List<ExhibitionResponseDto>> getExhibitions(@RequestParam(name = "tags", required = false) ExhibitionTagName tags, @RequestParam(name = "sortBy", required = false) String sortBy) {
-        return ResponseEntity.ok(exhibitionService.getExhibitions(tags, sortBy));
+        User user = userService.getMyInfo();
+        return ResponseEntity.ok(exhibitionService.getExhibitions(user, tags, sortBy));
     }
 
     // 전시회 검색 Controller (승인만)
     @ApiOperation(value = "전시회명 검색")
     @GetMapping("/search")
     public ResponseEntity<List<ExhibitionResponseDto>> getSearchExhibitions(@RequestParam(name = "search") String search, @RequestParam(name = "tags", required = false) ExhibitionTagName tags, @RequestParam(name = "sortBy", required = false) String sortBy) {
-        return ResponseEntity.ok(exhibitionService.getSearchExhibitions(search, tags, sortBy));
+        User user = userService.getMyInfo();
+        return ResponseEntity.ok(exhibitionService.getSearchExhibitions(user, search, tags, sortBy));
     }
 
     // 전시회 상세 페이지 조회 Controller (승인만)
@@ -118,13 +120,15 @@ public class ExhibitionController {
     @ApiOperation(value = "해당 전시회 작가의 다른 전시 목록 조회")
     @GetMapping("/artist/{exhibitionId}")
     public ResponseEntity<List<ExhibitionResponseDto>> getArtistExhibitions(@PathVariable("exhibitionId") Long exhibitionId) {
-        return ResponseEntity.ok(exhibitionService.getArtistExhibitions(exhibitionId));
+        User user = userService.getMyInfo();
+        return ResponseEntity.ok(exhibitionService.getArtistExhibitions(user, exhibitionId));
     }
 
     // 팔로워/팔로우의 전시 목록 조회 Controller (승인만)
     @ApiOperation(value = "팔로워/팔로우의 전시 목록 조회")
     @GetMapping("/follow/{followId}")
     public ResponseEntity<List<ExhibitionResponseDto>> getFollowUserExhibitions(@PathVariable("followId") Long followId) {
-        return ResponseEntity.ok(exhibitionService.getFollowUserExhibitions(followId));
+        User user = userService.getMyInfo();
+        return ResponseEntity.ok(exhibitionService.getFollowUserExhibitions(user, followId));
     }
 }

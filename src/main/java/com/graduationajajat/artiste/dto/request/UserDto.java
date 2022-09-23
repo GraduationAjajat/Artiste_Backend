@@ -5,6 +5,7 @@ import com.graduationajajat.artiste.model.Authority;
 import com.graduationajajat.artiste.model.User;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -40,6 +41,6 @@ public class UserDto {
     @NotNull
     private int gender;
 
-    private String profileImage;
+    private MultipartFile profileImage;
 
 }

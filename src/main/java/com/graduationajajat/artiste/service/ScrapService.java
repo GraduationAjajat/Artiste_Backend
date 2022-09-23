@@ -4,6 +4,7 @@ import com.graduationajajat.artiste.dto.response.ExhibitionResponseDto;
 import com.graduationajajat.artiste.model.*;
 import com.graduationajajat.artiste.repository.ArtRepository;
 import com.graduationajajat.artiste.repository.ExhibitionRepository;
+import com.graduationajajat.artiste.repository.ExhibitionTagRepository;
 import com.graduationajajat.artiste.repository.ScrapRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ public class ScrapService {
     private final ScrapRepository scrapRepository;
     private final ExhibitionRepository exhibitionRepository;
     private final ArtRepository artRepository;
-    private final ExhibitionService exhibitionService;
+    private final ExhibitionTagRepository exhibitionTagRepository;
 
     // 사용자 찜 목록 조회
     @Transactional
@@ -29,8 +30,11 @@ public class ScrapService {
             Exhibition exhibition = scrap.getExhibition();
 
             // 전시회 카테고리 조회
-            List<ExhibitionTagName> tagList = exhibitionService.getTagList(exhibition.getId());
-
+            List<ExhibitionTag> exhibitionTagList = exhibitionTagRepository.findAllByExhibitionId(exhibition.getId());
+            List<ExhibitionTagName> tagList = new ArrayList<>();
+            for (ExhibitionTag exhibitionTag : exhibitionTagList) {
+                tagList.add(exhibitionTag.getTag());
+            }
             // 전시회 작품 조회
             List<Art> artList = artRepository.findAllByExhibitionId(exhibition.getId());
 

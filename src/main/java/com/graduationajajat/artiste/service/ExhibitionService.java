@@ -2,9 +2,7 @@ package com.graduationajajat.artiste.service;
 
 import com.graduationajajat.artiste.dto.request.ArtDto;
 import com.graduationajajat.artiste.dto.request.ExhibitionDto;
-import com.graduationajajat.artiste.dto.response.ArtResponseDto;
-import com.graduationajajat.artiste.dto.response.ExhibitionDetailResponseDto;
-import com.graduationajajat.artiste.dto.response.ExhibitionResponseDto;
+import com.graduationajajat.artiste.dto.response.*;
 import com.graduationajajat.artiste.model.*;
 import com.graduationajajat.artiste.repository.ArtRepository;
 import com.graduationajajat.artiste.repository.ExhibitionRepository;
@@ -26,6 +24,7 @@ public class ExhibitionService {
     private final ExhibitionTagRepository exhibitionTagRepository;
     private final ArtRepository artRepository;
     private final FileProcessService fileProcessService;
+    private final ScrapService scrapService;
 
     // 전시회 등록
     @Transactional
@@ -70,7 +69,7 @@ public class ExhibitionService {
     }
 
     // 마감 전 승인된 전시회 전체 조회
-    public List<ExhibitionResponseDto> getExhibitions(ExhibitionTagName tags, String sortBy) {
+    public List<ExhibitionResponseDto> getExhibitions(User user, ExhibitionTagName tags, String sortBy) {
         if (sortBy == null) sortBy = "createdDate";
         LocalDateTime now = LocalDateTime.now(); // 지금 기준 마감 전
         Sort sort = Sort.by(Sort.Direction.DESC, sortBy); // 정렬
@@ -78,16 +77,35 @@ public class ExhibitionService {
         List<Exhibition> exhibitionList = exhibitionRepository
                 .findAllByExhibitionStateAndExhibitionEndDateAfter(ExhibitionState.APPROVAL, now, sort);
 
-        return getExhibitionWithTagsList(exhibitionList, tags);
+        return getExhibitionWithTagsList(user, exhibitionList, tags);
     }
 
     // 대기 중인 전시회 전체 조회
-    public List<ExhibitionResponseDto> getWaitingExhibitions() {
+    public List<WaitingExhibitionResponseDto> getWaitingExhibitions() {
 
         List<Exhibition> exhibitionList = exhibitionRepository
                 .findAllByExhibitionState(ExhibitionState.WAIT);
 
-        return getExhibitionList(exhibitionList);
+        List<WaitingExhibitionResponseDto> waitingExhibitionResponseDtoList = new ArrayList<>();
+        for (Exhibition exhibition : exhibitionList) {
+
+            // 전시회 카테고리 조회
+            List<ExhibitionTagName> tagList = getTagList(exhibition.getId());
+
+            List<Art> artList = artRepository.findAllByExhibitionId(exhibition.getId());
+
+            waitingExhibitionResponseDtoList.add(WaitingExhibitionResponseDto.builder()
+                    .exhibitionId(exhibition.getId())
+                    .exhibitionName(exhibition.getExhibitionName())
+                    .exhibitionThumbnail(artList.get(0).getArtImage())
+                    .exhibitionArtistName(exhibition.getUser().getUsername())
+                    .exhibitionStartDate(exhibition.getExhibitionStartDate())
+                    .exhibitionEndDate(exhibition.getExhibitionEndDate())
+                    .tagList(tagList)
+                    .exhibitionState(exhibition.getExhibitionState())
+                    .build());
+        }
+        return waitingExhibitionResponseDtoList;
     }
 
     // 대기 중인 전시회 승인
@@ -98,7 +116,7 @@ public class ExhibitionService {
     }
 
     // 승인된 전시회 검색
-    public List<ExhibitionResponseDto> getSearchExhibitions(String search, ExhibitionTagName tags, String sortBy) {
+    public List<ExhibitionResponseDto> getSearchExhibitions(User user, String search, ExhibitionTagName tags, String sortBy) {
         if (sortBy == null) sortBy = "createdDate";
         LocalDateTime now = LocalDateTime.now(); // 지금 기준 마감 전
         Sort sort = Sort.by(Sort.Direction.DESC, sortBy); // 정렬
@@ -108,7 +126,7 @@ public class ExhibitionService {
                         ExhibitionState.APPROVAL, search, now, sort
                 );
 
-        return getExhibitionWithTagsList(exhibitionList, tags);
+        return getExhibitionWithTagsList(user, exhibitionList, tags);
 
     }
 
@@ -139,7 +157,7 @@ public class ExhibitionService {
     // 사용자 전시 목록 조회 (승인 & 대기 상관 없이)
     public List<ExhibitionResponseDto> getUserExhibitions(User user) {
         List<Exhibition> exhibitionList = exhibitionRepository.findAllByUserId(user.getId(), Sort.by(Sort.Direction.DESC, "createdDate"));
-        return getExhibitionList(exhibitionList);
+        return getExhibitionList(user, exhibitionList);
     }
 
     // 해당 전시회 작가의 다른 승인된 전시 목록 조회
@@ -150,10 +168,10 @@ public class ExhibitionService {
     }
 
     // 팔로워/팔로우의 승인된 전시 목록 조회
-    public List<ExhibitionResponseDto> getFollowUserExhibitions(Long followId) {
+    public List<ExhibitionResponseDto> getFollowUserExhibitions(User user, Long followId) {
         List<Exhibition> exhibitionList = exhibitionRepository.findAllByUserIdAndExhibitionState(
                 followId, ExhibitionState.APPROVAL, Sort.by(Sort.Direction.DESC, "createdDate"));
-        return getExhibitionList(exhibitionList);
+        return getExhibitionList(user, exhibitionList);
     }
 
     // 전시회 카테고리 조회 메소드
@@ -167,7 +185,7 @@ public class ExhibitionService {
     }
 
     // 전시회 조회 메소드 (with 태그)
-    private List<ExhibitionResponseDto> getExhibitionWithTagsList(List<Exhibition> exhibitionList,
+    private List<ExhibitionResponseDto> getExhibitionWithTagsList(User user, List<Exhibition> exhibitionList,
                                                                   ExhibitionTagName tags) {
         List<ExhibitionResponseDto> exhibitionResponseDtoList = new ArrayList<>();
         for (Exhibition exhibition : exhibitionList) {
@@ -187,6 +205,7 @@ public class ExhibitionService {
                     .exhibitionStartDate(exhibition.getExhibitionStartDate())
                     .exhibitionEndDate(exhibition.getExhibitionEndDate())
                     .exhibitionState(exhibition.getExhibitionState())
+                    .scrapFlag(scrapService.checkUserScrap(user.getId(), exhibition.getId()))
                     .tagList(tagList)
                     .scrapCount(exhibition.getScrapCount())
                     .commentCount(exhibition.getCommentCount()).build());
@@ -195,7 +214,7 @@ public class ExhibitionService {
     }
 
     // 전시회 조회 메소드
-    private List<ExhibitionResponseDto> getExhibitionList(List<Exhibition> exhibitionList) {
+    private List<ExhibitionResponseDto> getExhibitionList(User user, List<Exhibition> exhibitionList) {
         List<ExhibitionResponseDto> exhibitionResponseDtoList = new ArrayList<>();
         for (Exhibition exhibition : exhibitionList) {
 
@@ -212,6 +231,7 @@ public class ExhibitionService {
                     .exhibitionStartDate(exhibition.getExhibitionStartDate())
                     .exhibitionEndDate(exhibition.getExhibitionEndDate())
                     .tagList(tagList)
+                    .scrapFlag(scrapService.checkUserScrap(user.getId(), exhibition.getId()))
                     .exhibitionState(exhibition.getExhibitionState())
                     .scrapCount(exhibition.getScrapCount())
                     .commentCount(exhibition.getCommentCount()).build());

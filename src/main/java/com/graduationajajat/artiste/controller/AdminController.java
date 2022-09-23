@@ -32,8 +32,8 @@ public class AdminController {
     @ApiOperation(value = "대기 중인 전시회 목록 조회")
     @GetMapping("/waiting")
     public ResponseEntity<? extends ResponseDto> getWaitingExhibitionList() {
-        List<ExhibitionResponseDto> exhibitionResponseDtoList = exhibitionService.getWaitingExhibitions();
-        return ResponseEntity.ok().body(new CommonResponseDto<>(exhibitionResponseDtoList));
+        List<WaitingExhibitionResponseDto> waitingExhibitionResponseDtoList = exhibitionService.getWaitingExhibitions();
+        return ResponseEntity.ok().body(new CommonResponseDto<>(waitingExhibitionResponseDtoList));
     }
 
     // 대기 중인 전시회 승인 Controller

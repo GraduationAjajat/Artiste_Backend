@@ -7,6 +7,7 @@ import com.graduationajajat.artiste.dto.request.UserDto;
 import com.graduationajajat.artiste.dto.response.UserResponseDto;
 import com.graduationajajat.artiste.jwt.TokenProvider;
 import com.graduationajajat.artiste.model.Authority;
+import com.graduationajajat.artiste.model.FileFolder;
 import com.graduationajajat.artiste.model.RefreshToken;
 import com.graduationajajat.artiste.model.User;
 import com.graduationajajat.artiste.repository.CommentRepository;
@@ -38,6 +39,7 @@ public class UserService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final ExhibitionRepository exhibitionRepository;
     private final CommentRepository commentRepository;
+    private final FileProcessService fileProcessService;
 
     @Transactional
     public TokenDto login(LoginDto loginDto) {
@@ -107,7 +109,6 @@ public class UserService {
                 .password(passwordEncoder.encode(userDto.getPassword()))
                 .birthday(userDto.getBirthday())
                 .gender(userDto.getGender())
-                .profileImage(userDto.getProfileImage())
                 .nickname(userDto.getNickname())
                 .authorities(Collections.singleton(authority))
                 .activated(true)
@@ -143,7 +144,8 @@ public class UserService {
         user.setNickname(userDto.getNickname());
         user.setBirthday(userDto.getBirthday());
         user.setGender(userDto.getGender());
-        user.setProfileImage(userDto.getProfileImage());
+        String url = fileProcessService.uploadImage(userDto.getProfileImage(), FileFolder.PROFILE_IMAGES);
+        user.setProfileImage(url);
 
         return userRepository.save(user);
     }

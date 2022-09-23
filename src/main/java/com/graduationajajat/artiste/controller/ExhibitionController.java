@@ -120,7 +120,8 @@ public class ExhibitionController {
     @ApiOperation(value = "해당 전시회 작가의 다른 전시 목록 조회")
     @GetMapping("/artist/{exhibitionId}")
     public ResponseEntity<List<ExhibitionResponseDto>> getArtistExhibitions(@PathVariable("exhibitionId") Long exhibitionId) {
-        return ResponseEntity.ok(exhibitionService.getArtistExhibitions(exhibitionId));
+        User user = userService.getMyInfo();
+        return ResponseEntity.ok(exhibitionService.getArtistExhibitions(user, exhibitionId));
     }
 
     // 팔로워/팔로우의 전시 목록 조회 Controller (승인만)

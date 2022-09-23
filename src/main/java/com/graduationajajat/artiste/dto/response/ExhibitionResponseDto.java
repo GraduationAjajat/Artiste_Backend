@@ -31,6 +31,8 @@ public class ExhibitionResponseDto {
 
     private ExhibitionState exhibitionState;
 
+    private boolean scrapFlag;
+
     private int scrapCount;
 
     private int commentCount;

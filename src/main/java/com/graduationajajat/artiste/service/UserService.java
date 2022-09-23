@@ -22,6 +22,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -137,15 +138,21 @@ public class UserService {
 
     // 회원 정보 수정
     @Transactional
-    public Object update(User user, UserDto userDto) {
+    public Object update(User user, UserDto userDto, MultipartFile profileImage) {
 
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setUsername(userDto.getUsername());
         user.setNickname(userDto.getNickname());
         user.setBirthday(userDto.getBirthday());
         user.setGender(userDto.getGender());
-        String url = fileProcessService.uploadImage(userDto.getProfileImage(), FileFolder.PROFILE_IMAGES);
-        user.setProfileImage(url);
+        if(profileImage != null) {
+            String url = fileProcessService.uploadImage(profileImage, FileFolder.PROFILE_IMAGES);
+            user.setProfileImage(url);
+        }
+        else {
+            user.setProfileImage(userDto.getProfileImage());
+        }
+
 
         return userRepository.save(user);
     }

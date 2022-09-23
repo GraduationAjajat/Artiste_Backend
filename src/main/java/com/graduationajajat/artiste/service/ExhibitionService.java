@@ -161,10 +161,13 @@ public class ExhibitionService {
     }
 
     // 해당 전시회 작가의 다른 승인된 전시 목록 조회
-    public List<ExhibitionResponseDto> getArtistExhibitions(Long exhibitionId) {
+    public List<ExhibitionResponseDto> getArtistExhibitions(User user, Long exhibitionId) {
         Exhibition exhibition = exhibitionRepository.findByIdAndExhibitionState(exhibitionId, ExhibitionState.APPROVAL).orElse(null);
-        assert exhibition != null;
-        return getUserExhibitions(exhibition.getUser());
+        List<Exhibition> exhibitionList = new ArrayList<>();
+        if(exhibition != null) {
+            exhibitionList = exhibitionRepository.findAllByUserIdAndIdNot(exhibition.getUser().getId(), exhibitionId, Sort.by(Sort.Direction.DESC, "createdDate"));
+        }
+        return getExhibitionList(user, exhibitionList);
     }
 
     // 팔로워/팔로우의 승인된 전시 목록 조회

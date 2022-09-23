@@ -10,7 +10,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
@@ -82,9 +84,9 @@ public class UserController {
     // 회원 정보 수정 Controller
     @ApiOperation(value = "회원 정보 수정")
     @PutMapping("")
-    public ResponseEntity<Object> update(@Valid @RequestBody UserDto userDto) {
+    public ResponseEntity<Object> update(@Valid @RequestPart UserDto userDto, @Nullable  @RequestPart MultipartFile profileImage) {
         User user = userService.getMyInfo();
-        return ResponseEntity.ok(userService.update(user, userDto));
+        return ResponseEntity.ok(userService.update(user, userDto, profileImage));
     }
 
 }

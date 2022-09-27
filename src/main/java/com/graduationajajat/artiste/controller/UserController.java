@@ -83,7 +83,7 @@ public class UserController {
 
     // 회원 정보 수정 Controller
     @ApiOperation(value = "회원 정보 수정")
-    @PutMapping("")
+    @PostMapping("")
     public ResponseEntity<Object> update(@Valid @RequestPart UserDto userDto, @Nullable  @RequestPart MultipartFile profileImage) {
         User user = userService.getMyInfo();
         return ResponseEntity.ok(userService.update(user, userDto, profileImage));

@@ -134,6 +134,9 @@ public class ExhibitionService {
     public ExhibitionDetailResponseDto getExhibitionDetail(Long exhibitionId) {
         Exhibition exhibition = exhibitionRepository.findById(exhibitionId).orElse(null);
         exhibition.setHits(exhibition.getHits() + 1); // 조회 수 증가
+        // 전시회 태그 조회
+        List<ExhibitionTagName> tagList = getTagList(exhibitionId);
+        // 전시회 작품 조회
         List<Art> artList = artRepository.findAllByExhibitionId(exhibitionId);
         List<ArtResponseDto> artDtoList = new ArrayList<>();
         for (Art art : artList) {
@@ -151,6 +154,9 @@ public class ExhibitionService {
                 .exhibitionName(exhibition.getExhibitionName())
                 .exhibitionArtist(exhibition.getUser())
                 .exhibitionDesc(exhibition.getExhibitionDesc())
+                .exhibitionStartDate(exhibition.getExhibitionStartDate())
+                .exhibitionEndDate(exhibition.getExhibitionEndDate())
+                .tagList(tagList)
                 .artList(artDtoList).build();
     }
 

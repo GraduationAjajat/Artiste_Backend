@@ -1,6 +1,6 @@
 package com.graduationajajat.artiste.controller;
 
-import com.graduationajajat.artiste.dto.request.QnaDto;
+import com.graduationajajat.artiste.dto.request.AnswerDto;
 import com.graduationajajat.artiste.dto.response.*;
 import com.graduationajajat.artiste.model.Comment;
 import com.graduationajajat.artiste.service.CommentService;
@@ -47,7 +47,7 @@ public class AdminController {
     // 문의 사항 답변 Controller
     @ApiOperation(value = "문의 사항 답변")
     @PutMapping("/qna")
-    public ResponseEntity answerQna(@RequestBody QnaDto qnaDto) {
+    public ResponseEntity answerQna(@RequestBody AnswerDto qnaDto) {
         qnaService.answerQna(qnaDto.getQnaId(), qnaDto.getQnaAnswer());
         return new ResponseEntity(HttpStatus.OK);
     }

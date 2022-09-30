@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class QnaDto {
+public class AnswerDto {
     @NotNull
     private Long qnaId;
 

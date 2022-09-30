@@ -1,5 +1,6 @@
 package com.graduationajajat.artiste.controller;
 
+import com.graduationajajat.artiste.dto.request.QuestionDto;
 import com.graduationajajat.artiste.dto.response.CommonResponseDto;
 import com.graduationajajat.artiste.dto.response.ResponseDto;
 import com.graduationajajat.artiste.model.ExhibitionTagName;
@@ -37,9 +38,9 @@ public class QnaController {
     // 사용자 문의 사항 추가 Controller
     @ApiOperation(value = "사용자 문의 사항 추가")
     @PostMapping("")
-    public ResponseEntity createQna(@RequestParam(name = "qnaContent", required = true) String qnaContent) {
+    public ResponseEntity createQna(@RequestBody QuestionDto questionDto) {
         User user = userService.getMyInfo();
-        qnaService.createQna(user, qnaContent);
+        qnaService.createQna(user, questionDto.getQnaContent());
         return new ResponseEntity(HttpStatus.OK);
     }
 }

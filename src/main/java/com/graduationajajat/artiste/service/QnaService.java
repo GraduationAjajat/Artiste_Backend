@@ -5,6 +5,7 @@ import com.graduationajajat.artiste.model.Qna;
 import com.graduationajajat.artiste.model.User;
 import com.graduationajajat.artiste.repository.QnaRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +19,8 @@ public class QnaService {
 
     // 문의사항 목록 조회
     public List<Qna> getQnas() {
-        return qnaRepository.findAll();
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdDate"); // 정렬
+        return qnaRepository.findAll(sort);
     }
 
     // 사용자 문의사항 추가
